@@ -1,3 +1,4 @@
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { auth } from "../Firebase";
 
@@ -17,9 +18,31 @@ export const AuthDetails = () => {
     };
   }, []);
 
+  const userSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("signed out");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
-    <div>
-      {authUser ? <p>Signed In as: {authUser.email}</p> : <p>Signed Out</p>}
-    </div>
+    <>
+      <h1>Auth Details</h1>
+      <div className="alert alert-success" role="alert">
+        {authUser ? (
+          <div>
+            Signed In as {authUser.email}
+            <a href="#" className="alert-link" onClick={userSignOut}>
+              Sign Out
+            </a>
+          </div>
+        ) : (
+          <div>Signed out</div>
+        )}
+      </div>
+    </>
   );
 };
